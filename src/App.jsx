@@ -5,28 +5,76 @@ import About from './assets/about';
 import Signup from './assets/signin';
 import Dashboard from './assets/dashboard';
 import Createacc from './assets/Createacc';
-import Skills from './assets/skills';
-
-//import Createacc from './assets/createacc';
 
 const App = () => {
   return (
     <>
-      <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', background: '#eee' }}>
-        <Link to="/">Home</Link>
-        <Link to="/about">Contact</Link>
-        <Link to="/signup">Signup</Link>
+      <nav
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1rem 2rem',
+          background: 'linear-gradient(90deg, #0f2027, #203a43, #2c5364)', // Dark elegant gradient
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.4)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+        }}
+      >
+        {/* Logo or Title */}
+        <div
+          style={{
+            fontSize: '1.7rem',
+            fontWeight: '600',
+            color: '#fff',
+            letterSpacing: '1px',
+            textShadow: '0 0 10px rgba(255,255,255,0.3)',
+          }}
+        >
+          Laptop-buy-guide
+        </div>
+
+        {/* Navigation Links */}
+        <div style={{ display: 'flex', gap: '1.8rem' }}>
+          {['/', '/about', '/signup'].map((path, i) => {
+            const names = ['Home', 'Contact', 'Signup'];
+            return (
+              <Link
+                key={path}
+                to={path}
+                style={{
+                  color: '#e0e0e0',
+                  textDecoration: 'none',
+                  fontWeight: '500',
+                  fontSize: '1.05rem',
+                  position: 'relative',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#00adb5';
+                  e.target.style.textShadow = '0 0 8px #00adb5';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = '#e0e0e0';
+                  e.target.style.textShadow = 'none';
+                }}
+              >
+                {names[i]}
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />}/>
-        <Route path="/createacc" element={<Createacc />}/>
-         <Route path="/skills" element={<Skills />}/>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/createacc" element={<Createacc />} />
       </Routes>
-      </>
+    </>
   );
 };
 
