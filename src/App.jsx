@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from './assets/home';
-import About from './assets/about';
-import Signup from './assets/signin';
-import Dashboard from './assets/dashboard';
+import Home from './assets/Home';
+import About from './assets/About';
+import Signup from './assets/Signin';
+import Dashboard from './assets/Dashboard';
 import Createacc from './assets/Createacc';
 
 const App = () => {

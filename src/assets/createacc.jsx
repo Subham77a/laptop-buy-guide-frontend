@@ -38,7 +38,7 @@ function Createacc() {
         setMessage("Registration successful! Redirecting... ");
 
         setTimeout(() => {
-          navigate("/signup");
+          navigate("/Signup");
         }, 2000);
 
       } else {

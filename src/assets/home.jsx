@@ -16,7 +16,7 @@ const Home = () => {
           specifications actually matter, so you can make informed decisions
           and avoid marketing traps.
         </p>
-        <button onClick={() => navigate("/signup")}>Get Started</button>
+        <button onClick={() => navigate("/Signup")}>Get Started</button>
       </section>
 
       {/* ================= USAGE ================= */}
@@ -171,7 +171,7 @@ const Home = () => {
           Our platform combines machine learning predictions with human-friendly
           explanations — so you never buy blindly again.
         </p>
-        <button onClick={() => navigate("/signup")}>
+        <button onClick={() => navigate("/Signup")}>
           Start Exploring 🚀
         </button>
       </section>
