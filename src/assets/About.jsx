@@ -24,7 +24,7 @@ const About = () => {
         <div className="profile-wrapper">
           <div className="profile-glow"></div>
           <img
-            src="../public/images/profilePic.jpg"
+            src="../images/profilePic.jpg"
             alt="Profile"
             className="profile-image"
           />
