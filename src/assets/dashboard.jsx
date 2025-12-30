@@ -13,7 +13,7 @@ const Dashboard = () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      navigate("/signup");
+      navigate("/Signup");
       return;
     }
 
