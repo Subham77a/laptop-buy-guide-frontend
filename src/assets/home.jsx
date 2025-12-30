@@ -1,202 +1,207 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate('/signup');
-  };
-
   return (
-    <div
-      style={{
-        fontFamily: 'Poppins, sans-serif',
-        backgroundColor: '#0d1117',
-        minHeight: '100vh',
-        color: '#e6edf3',
-      }}
-    >
-      {/* ===== Hero Section ===== */}
-      <section
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          padding: '8rem 1rem',
-          background:
-            'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #111827 100%)',
-          boxShadow: '0 6px 30px rgba(0,0,0,0.6)',
-        }}
-      >
-        <h1
-          style={{
-            fontSize: '3.2rem',
-            marginBottom: '1rem',
-            fontWeight: '700',
-            letterSpacing: '1px',
-            color: '#f3f4f6',
-          }}
-        >
-          Welcome to My Laptop-buy-guide ⚡
-        </h1>
-        <p
-          style={{
-            maxWidth: '850px',
-            fontSize: '1.15rem',
-            lineHeight: '1.9',
-            color: '#cbd5e1',
-          }}
-        >
-          Dive into a sleek and powerful React environment designed to be fast,
-          responsive, and immersive. This space highlights real project visuals,
-          development insights, and app features — all crafted for clarity and
-          modern aesthetics.
+    <div className="home">
+
+      {/* ================= HERO ================= */}
+      <section className="hero">
+        <h1>LapWise: An Intelligent & Educational Laptop Advisor</h1>
+        <p>
+          We don’t just predict laptop prices — we help you understand what
+          specifications actually matter, so you can make informed decisions
+          and avoid marketing traps.
         </p>
-        <button
-          onClick={handleClick}
-          style={{
-            marginTop: '3rem',
-            padding: '1rem 2.8rem',
-            fontSize: '1.1rem',
-            fontWeight: '600',
-            color: '#fff',
-            backgroundColor: '#2563eb',
-            border: 'none',
-            borderRadius: '10px',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseEnter={(e) => (e.target.style.backgroundColor = '#3b82f6')}
-          onMouseLeave={(e) => (e.target.style.backgroundColor = '#2563eb')}
-        >
-          Get Started
+        <button onClick={() => navigate("/signup")}>Get Started</button>
+      </section>
+
+      {/* ================= USAGE ================= */}
+      <GuideBlock
+        title="We’ve Got a Laptop for Every Use"
+        subtitle="Choose based on what you actually do — not confusing specs."
+        points={[
+          "Everyday Use – Browsing, emails, OTT, MS Office",
+          "Business – Documents, presentations, multitasking",
+          "Studying – Online classes, assignments, research",
+          "Gaming – High performance CPU & dedicated GPU",
+          "Designing & Video Editing – 4K editing, 3D animation, professional tools",
+          "Recommended for creators: 32GB RAM, 15.6”–17.3” display"
+        ]}
+        image="/images/laptop.jpg"
+      />
+
+      {/* ================= OS ================= */}
+      <GuideBlock
+        title="Choose the Right Operating System"
+        subtitle="Your OS defines compatibility, ecosystem, and long-term comfort."
+        points={[
+          "macOS – Exclusive to Apple, stable and user-friendly",
+          "Best if you already use iPhone, iPad, or Apple Watch",
+          "MacBook Air – Browsing, office work, light editing",
+          "MacBook Pro – Heavy apps, editing, development, design",
+          "Windows – Most versatile, widest software support",
+          "ChromeOS – Lightweight, best for students and basic usage"
+        ]}
+        image="/images/operating-system.jpg"
+        reverse
+      />
+
+      {/* ================= PROCESSOR ================= */}
+      <GuideBlock
+        title="Processor (The Brain)"
+        subtitle="The processor determines how fast your laptop can think."
+        points={[
+          "Clock Speed (GHz): Higher GHz = faster single-task performance",
+          "Cores & Threads: More cores allow smoother multitasking",
+          "Intel Core i3 / Ryzen 3 – Basic tasks",
+          "Intel Core i5 / Ryzen 5 – Balanced performance",
+          "Intel Core i7 / Ryzen 7 – Heavy workloads & gaming",
+          "U-Series CPUs focus on battery life",
+          "H / HX-Series CPUs focus on raw performance"
+        ]}
+        image="/images/processor.jpg"
+      />
+
+      {/* ================= RAM ================= */}
+      <GuideBlock
+        title="RAM (Your Workspace)"
+        subtitle="More RAM means smoother multitasking."
+        points={[
+          "4GB – Only for very basic browsing (not recommended in 2025)",
+          "8GB – Minimum for students and office work",
+          "16GB – Sweet spot for developers & creators",
+          "32GB+ – Required for professional editing, CAD, virtual machines",
+          "Always check if RAM is expandable before buying"
+        ]}
+        image="/images/ram.jpg"
+        reverse
+      />
+
+      {/* ================= STORAGE ================= */}
+      <GuideBlock
+        title="Storage (SSD vs HDD)"
+        subtitle="Storage speed affects performance more than most people realize."
+        points={[
+          "SSD – Faster boot times and instant app launches",
+          "HDD – Only useful as secondary storage",
+          "Never buy a laptop with only HDD in 2025",
+          "Recommended minimum: 512GB SSD"
+        ]}
+        image="/images/storage.jpg"
+      />
+
+      {/* ================= GRAPHICS ================= */}
+      <GuideBlock
+        title="Graphics (GPU)"
+        subtitle="Responsible for visuals, gaming, and rendering performance."
+        points={[
+          "Integrated Graphics – Enough for everyday use, office work, media",
+          "Uses system RAM and CPU power",
+          "Dedicated Graphics – Required for gaming, video editing, 3D work",
+          "Has its own GPU and VRAM for faster performance"
+        ]}
+        image="/images/gpu.jpg"
+        reverse
+      />
+
+      {/* ================= SCREEN SIZE ================= */}
+      <GuideBlock
+        title="Screen Size"
+        subtitle="Choose comfort vs portability."
+        points={[
+          "11–13 inch – Compact, ideal for students and travel",
+          "14–16 inch – Most popular, balanced portability & usability",
+          "17–19 inch – Large and heavy, ideal for gaming & creative work"
+        ]}
+        image="/images/screen-size.jpg"
+      />
+
+      {/* ================= RESOLUTION ================= */}
+      <GuideBlock
+        title="Display Resolution"
+        subtitle="Higher resolution means sharper visuals."
+        points={[
+          "HD – Suitable only for basic usage",
+          "Full HD (1080p) – Standard for most users",
+          "QHD / 4K – Best for professional editing, gaming, and design",
+          "Avoid low-resolution panels for long working hours"
+        ]}
+        image="/images/displayresolution.jpg"
+        reverse
+      />
+
+      {/* ================= FORM FACTOR ================= */}
+      <GuideBlock
+        title="Form Factor"
+        subtitle="Design, weight, and flexibility matter."
+        points={[
+          "Notebook – Classic design, easy to use",
+          "Thin & Light – Portable and travel-friendly",
+          "Touchscreen – Added convenience",
+          "2-in-1 – Converts into a tablet",
+          "Gaming Laptops – Performance-oriented and heavy"
+        ]}
+        image="/images/form-factor.png"
+      />
+
+      {/* ================= ADDITIONAL FEATURES ================= */}
+      <GuideBlock
+        title="Additional Features That Matter"
+        subtitle="Small things that make a big difference long-term."
+        points={[
+          "Body Material – Aluminium is more durable than plastic",
+          "Keyboard – Backlit keyboards improve usability",
+          "Battery – Higher capacity = better portability",
+          "Ports – USB, HDMI, Type-C, Thunderbolt matter",
+          "Included Software – MS Office & antivirus add value",
+          "Disc Drive – Only required for legacy software or discs"
+        ]}
+        image="/images/last.png"
+        reverse
+      />
+
+      {/* ================= CTA ================= */}
+      <section className="cta">
+        <h2>Make Smarter Laptop Decisions</h2>
+        <p>
+          Our platform combines machine learning predictions with human-friendly
+          explanations — so you never buy blindly again.
+        </p>
+        <button onClick={() => navigate("/signup")}>
+          Start Exploring 🚀
         </button>
       </section>
 
-      {/* ===== About Section ===== */}
-      <section
-        style={{
-          padding: '6rem 2rem',
-          maxWidth: '1100px',
-          margin: '0 auto',
-          textAlign: 'center',
-        }}
-      >
-        <h2
-          style={{
-            fontSize: '2.2rem',
-            fontWeight: '600',
-            marginBottom: '2rem',
-            color: '#f3f4f6',
-          }}
-        >
-          A Platform Built for Innovation
-        </h2>
-        <p
-          style={{
-            fontSize: '1.05rem',
-            maxWidth: '850px',
-            margin: '0 auto',
-            color: '#9ca3af',
-            lineHeight: '1.8',
-          }}
-        >
-          Here you can explain your app, purpose, or idea in depth. This section is
-          intentionally spaced for long-form text, allowing you to share the project
-          story, technology stack, or goals. Add as many paragraphs as you need —
-          this area is designed to expand naturally for reading comfort.
-        </p>
-      </section>
-
-      {/* ===== Vertical Feature Highlights ===== */}
-      <section
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '4rem',
-          padding: '2rem 2rem 6rem',
-          maxWidth: '1200px',
-          margin: '0 auto',
-        }}
-      >
-        {[1, 2, 3].map((num) => (
-          <div
-            key={num}
-            style={{
-              backgroundColor: '#161b22',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              boxShadow: '0 8px 25px rgba(0,0,0,0.4)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.01)';
-              e.currentTarget.style.boxShadow =
-                '0 12px 35px rgba(0,0,0,0.6)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow =
-                '0 8px 25px rgba(0,0,0,0.4)';
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '600px', // Large height for 1920x1200 screenshots
-                background: `url('https://source.unsplash.com/1920x1200/?coding,tech,${num}') center/cover no-repeat`,
-                borderBottom: '2px solid #1f2937',
-              }}
-            ></div>
-            <div
-              style={{
-                padding: '2rem 2.5rem',
-                textAlign: 'left',
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: '1.6rem',
-                  marginBottom: '1rem',
-                  color: '#f3f4f6',
-                }}
-              >
-                Feature Highlight {num}
-              </h3>
-              <p
-                style={{
-                  color: '#9ca3af',
-                  fontSize: '1.05rem',
-                  lineHeight: '1.7',
-                }}
-              >
-                This section showcases a feature or visual from your app in full width
-                and height. You can use real screenshots or high-resolution renders here
-                — perfect for detailed previews. Add any accompanying explanation,
-                context, or notes about functionality and design choices.
-              </p>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      {/* ===== Footer ===== */}
-      <footer
-        style={{
-          backgroundColor: '#0a0f16',
-          color: '#8b949e',
-          textAlign: 'center',
-          padding: '2rem 1rem',
-          fontSize: '0.9rem',
-          borderTop: '1px solid #1f2937',
-        }}
-      >
-        © 2025 MyWebsite — Built with ⚡ React | Designed for Dark Mode Excellence
+      {/* ================= FOOTER ================= */}
+      <footer>
+        © 2025 Laptop Buy Guide · Educating Before Recommending
       </footer>
+
     </div>
+  );
+};
+
+/* ========== REUSABLE SECTION COMPONENT ========== */
+const GuideBlock = ({ title, subtitle, points, image, reverse }) => {
+  return (
+    <section className={`guide ${reverse ? "reverse" : ""}`}>
+      <div className="guide-text">
+        <h2>{title}</h2>
+        <p className="subtitle">{subtitle}</p>
+        <ul>
+          {points.map((p, i) => (
+            <li key={i}>{p}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="guide-image">
+        <img src={image} alt={title} />
+      </div>
+    </section>
   );
 };
 

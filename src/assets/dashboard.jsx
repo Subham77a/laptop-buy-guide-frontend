@@ -1,393 +1,314 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  ArrowRightCircle,
-  Laptop2,
-  DollarSign,
-  Brain,
-  ExternalLink,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { brandData } from "../data/brandData";
 
 const Dashboard = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const username = location.state?.username;
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState("");
 
-  // redirect if no username
   useEffect(() => {
-    if (!username) {
-      alert("Sign in first!");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
       navigate("/signup");
-    }
-  }, [username, navigate]);
-
-  // form state
-  const [actualPrice, setActualPrice] = useState("");
-  const [predictedPrice, setPredictedPrice] = useState("");
-  const [advice, setAdvice] = useState(null);
-  const [brand, setBrand] = useState("");
-
-  // hover states for simple interaction
-  const [hoverEval, setHoverEval] = useState(false);
-  const [hoverBrandBtn, setHoverBrandBtn] = useState(false);
-  const [hoverPredBtn, setHoverPredBtn] = useState(false);
-
-  const brandWebsites = {
-    asus: "https://www.asus.com",
-    acer: "https://www.acer.com",
-    lenovo:
-      "https://support.lenovo.com/in/en/lenovo-service-provider",
-    dell: "https://www.dell.com",
-    hp: "https://www.hp.com",
-    razor: "https://www.razer.com",
-    apple: "https://www.apple.com",
-    windows: "https://www.microsoft.com",
-    google: "https://store.google.com",
-  };
-
-  // Evaluate deal with validation for zero / invalid inputs
-  const handleEvaluate = () => {
-    const actual = parseFloat(actualPrice);
-    const predicted = parseFloat(predictedPrice);
-
-    if (isNaN(actual) || isNaN(predicted)) {
-      alert("Please enter valid numbers for both prices.");
-      return;
-    }
-    if (predicted === 0) {
-      alert("Predicted price must be greater than 0.");
       return;
     }
 
-    const diffPercent = ((actual - predicted) / predicted) * 100;
-    let score, message;
+    axios
+      .get("http://localhost:3000/api/auth/validate-token", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setUser(res.data.user);
+        setLoading(false);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        navigate("/signup");
+      });
+  }, [navigate]);
 
-    if (diffPercent < -15) {
-      score = 9;
-      message = "🔥 Great deal! Definitely buy it.";
-    } else if (diffPercent < 0) {
-      score = 7;
-      message = "✅ Good deal. Worth considering.";
-    } else if (diffPercent < 10) {
-      score = 5;
-      message = "⚖️ Average deal. Neutral.";
-    } else if (diffPercent < 20) {
-      score = 3;
-      message = "⚠️ Slightly overpriced. Maybe wait.";
-    } else {
-      score = 1;
-      message = "❌ Overpriced. Don’t buy.";
-    }
+  if (loading) {
+    return (
+      <p style={{ textAlign: "center", color: "#c7d2fe" }}>
+        Checking authentication...
+      </p>
+    );
+  }
 
-    setAdvice({ score, message });
-  };
-
-  const handleBrandRedirect = () => {
-    if (!brand) {
-      alert("Please select a brand first.");
-      return;
-    }
-    const url = brandWebsites[brand];
-    if (!url) {
-      alert("Brand website not available.");
-      return;
-    }
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
-  if (!username) return <div>Redirecting to Sign-In...</div>;
-
-  // INLINE STYLES (no external css)
-  const styles = {
-    page: {
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      background:
-        "linear-gradient(180deg, #0f1226 0%, #0b0d14 100%)",
-      color: "#f5f7fb",
-      fontFamily: "Inter, 'Segoe UI', Roboto, sans-serif",
-      padding: "36px",
-    },
-    card: {
-      width: "100%",
-      maxWidth: "720px",
-      borderRadius: "20px",
-      background: "linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))",
-      border: "1px solid rgba(255,255,255,0.04)",
-      boxShadow: "0 12px 40px rgba(2,6,23,0.6)",
-      padding: "32px",
-      backdropFilter: "blur(8px)",
-    },
-    header: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      gap: "16px",
-      marginBottom: "22px",
-    },
-    titleBlock: {
-      display: "flex",
-      flexDirection: "column",
-    },
-    title: {
-      fontSize: "24px",
-      fontWeight: 800,
-      margin: 0,
-      color: "#ffffff",
-    },
-    subtitle: {
-      marginTop: "6px",
-      color: "#9aa3bf",
-      fontSize: "13.5px",
-    },
-    predBtn: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: "10px",
-      background: hoverPredBtn ? "#2b6af8" : "linear-gradient(180deg,#3b82f6,#2563eb)",
-      color: "#fff",
-      padding: "14px 18px",
-      borderRadius: "14px",
-      border: "none",
-      cursor: "pointer",
-      fontWeight: 700,
-      fontSize: "15px",
-      boxShadow: hoverPredBtn ? "0 8px 30px rgba(37,99,235,0.28)" : "0 6px 20px rgba(59,130,246,0.18)",
-      textDecoration: "none",
-    },
-    section: {
-      marginTop: "18px",
-    },
-    labelRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-      marginBottom: "8px",
-      color: "#cbd5e1",
-      fontWeight: 600,
-    },
-    input: {
-      width: "100%",
-      padding: "12px 14px",
-      borderRadius: "10px",
-      border: "1px solid rgba(255,255,255,0.06)",
-      background: "rgba(255,255,255,0.02)",
-      color: "#eef2ff",
-      fontSize: "15px",
-      outline: "none",
-    },
-    evalBtn: {
-      width: "100%",
-      marginTop: "18px",
-      padding: "12px 16px",
-      borderRadius: "12px",
-      border: "none",
-      cursor: "pointer",
-      fontWeight: 700,
-      fontSize: "15px",
-      color: "#fff",
-      background: hoverEval ? "#1f5ae0" : "linear-gradient(180deg,#2771ff,#1f5ae0)",
-      boxShadow: hoverEval ? "0 10px 30px rgba(31,90,224,0.28)" : "0 6px 18px rgba(39,113,255,0.16)",
-    },
-    adviceBox: {
-      marginTop: "18px",
-      padding: "16px",
-      borderRadius: "12px",
-      background: "rgba(255,255,255,0.02)",
-      border: "1px solid rgba(255,255,255,0.03)",
-    },
-    score: { fontSize: "22px", color: "#7cc5ff", fontWeight: 800 },
-    message: { marginTop: "8px", color: "#dbe7ff" },
-    brandArea: {
-      marginTop: "20px",
-      padding: "16px",
-      borderRadius: "12px",
-      background: "rgba(255,255,255,0.01)",
-      border: "1px solid rgba(255,255,255,0.03)",
-    },
-    select: {
-      width: "100%",
-      padding: "11px 12px",
-      borderRadius: "9px",
-      border: "1px solid rgba(255,255,255,0.06)",
-      background: "rgba(255,255,255,0.02)",
-      color: "#eef2ff",
-      fontSize: "14.5px",
-      outline: "none",
-    },
-    brandBtn: {
-      marginTop: "12px",
-      width: "100%",
-      padding: "11px 12px",
-      borderRadius: "10px",
-      border: "none",
-      fontWeight: 700,
-      cursor: "pointer",
-      color: "#0b1220",
-      background: hoverBrandBtn ? "#3fb36a" : "#46d074",
-      boxShadow: hoverBrandBtn ? "0 10px 30px rgba(70,208,116,0.2)" : "0 6px 18px rgba(70,208,116,0.12)",
-    },
-  };
+  const brand = selectedBrand ? brandData[selectedBrand] : null;
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
-        {/* Header with large Prediction button on the right */}
-        <div style={styles.header}>
-          <div style={styles.titleBlock}>
-            <h2 style={styles.title}>
-              Welcome, <span style={{ color: "#7cc5ff" }}>{username}</span>
-            </h2>
-            <div style={styles.subtitle}>
-              Evaluate your laptop deal and check brand support pages.
-            </div>
-          </div>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #020617, #020617)",
+        display: "flex",
+        justifyContent: "center",
+        padding: "40px 20px",
+        color: "#e5e7eb",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1000px",
+          background: "#020617",
+          borderRadius: "16px",
+          padding: "32px",
+          border: "1px solid #1e293b",
+          boxShadow: "0 20px 50px rgba(0,0,0,0.7)",
+        }}
+      >
+        {/* 🔹 HEADER */}
+        <h1 style={{ color: "#e0e7ff", marginBottom: "6px" }}>
+          LapWise: An Intelligent & Educational Laptop Advisor
+        </h1>
+        {user && (
+          <p style={{ color: "#94a3b8", marginBottom: "28px" }}>
+            Welcome, <strong>{user.username}</strong>
+          </p>
+        )}
 
-          {/* Prominent Prediction Website button (top-right) */}
-          <a
-            href="http://localhost:8501"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={styles.predBtn}
-            onMouseEnter={() => setHoverPredBtn(true)}
-            onMouseLeave={() => setHoverPredBtn(false)}
-            aria-label="Open prediction website"
-          >
-            <ArrowRightCircle size={18} /> Open Prediction Site
-          </a>
-        </div>
+        {/* 🔹 PRIMARY ACTION */}
+        <button
+          onClick={() => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+              alert("Session expired. Please login again.");
+              navigate("/signup");
+              return;
+            }
+            window.location.href = `http://localhost:8501/?token=${token}`;
+          }}
+          style={{
+            background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+            color: "#fff",
+            padding: "14px 24px",
+            borderRadius: "10px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "16px",
+            boxShadow: "0 8px 30px rgba(37,99,235,0.45)",
+          }}
+        >
+          Open Prediction & Evaluation Model 🚀
+        </button>
 
-        {/* Inputs */}
-        <div style={styles.section}>
-          <div style={{ marginBottom: 12 }}>
-            <div style={styles.labelRow}>
-              <DollarSign size={16} />
-              <span>Actual Price (₹)</span>
-            </div>
-            <input
-              type="number"
-              inputMode="decimal"
-              placeholder="e.g., 55000"
-              style={styles.input}
-              value={actualPrice}
-              onChange={(e) => setActualPrice(e.target.value)}
-            />
-          </div>
-
-          <div style={{ marginBottom: 6 }}>
-            <div style={styles.labelRow}>
-              <Brain size={16} />
-              <span>Predicted Price (₹)</span>
-            </div>
-            <input
-              type="number"
-              inputMode="decimal"
-              placeholder="e.g., 60000"
-              style={styles.input}
-              value={predictedPrice}
-              onChange={(e) => setPredictedPrice(e.target.value)}
-            />
-          </div>
-
-          <button
-            onMouseEnter={() => setHoverEval(true)}
-            onMouseLeave={() => setHoverEval(false)}
-            style={styles.evalBtn}
-            onClick={handleEvaluate}
-          >
-            Evaluate Deal
-          </button>
-
-          {advice && (
-            <div style={styles.adviceBox}>
-              <div style={styles.score}>Score: {advice.score}/10</div>
-              <div style={styles.message}>{advice.message}</div>
-            </div>
-          )}
-        </div>
-
-        {/* Brand selection */}
-        <div style={styles.brandArea}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-            <Laptop2 size={16} />
-            <strong>Check brand service availability near you</strong>
-          </div>
-
+        {/* 🔹 BRAND SELECTOR */}
+        <div style={{ marginTop: "45px" }}>
+          <h3 style={{ color: "#c7d2fe", marginBottom: "10px" }}>
+            Select a Laptop Brand
+          </h3>
           <select
-  value={brand}
-  onChange={(e) => setBrand(e.target.value)}
-  style={{
-    width: "100%",
-    padding: "12px",
-    borderRadius: "8px",
-    border: "1px solid #444",
-    backgroundColor: "#2a2a2a", // dark dropdown background
-    color: "#f1f1f1", // light text color
-    fontSize: "15px",
-    outline: "none",
-    cursor: "pointer",
-    appearance: "none",
-  }}
->
-  <option value="" style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}>
-    -- Select a brand --
-  </option>
-  <option value="asus" style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}>
-    ASUS
-  </option>
-  <option value="acer" style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}>
-    Acer
-  </option>
-  <option
-    value="lenovo"
-    style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}
-  >
-    Lenovo
-  </option>
-  <option
-    value="dell"
-    style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}
-  >
-    Dell
-  </option>
-  <option value="hp" style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}>
-    HP
-  </option>
-  <option
-    value="razor"
-    style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}
-  >
-    Razer
-  </option>
-  <option
-    value="apple"
-    style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}
-  >
-    Apple
-  </option>
-  <option
-    value="windows"
-    style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}
-  >
-    Windows
-  </option>
-  <option
-    value="google"
-    style={{ backgroundColor: "#2a2a2a", color: "#f1f1f1" }}
-  >
-    Google
-  </option>
-</select>
-
-          <button
-            onMouseEnter={() => setHoverBrandBtn(true)}
-            onMouseLeave={() => setHoverBrandBtn(false)}
-            onClick={handleBrandRedirect}
-            style={styles.brandBtn}
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #334155",
+              background: "#020617",
+              color: "#e5e7eb",
+              fontSize: "15px",
+            }}
           >
-            Check Location<ExternalLink size={14} style={{ marginLeft: 8 }} />
+            <option value="">-- Choose a brand --</option>
+            {Object.keys(brandData).map((b) => (
+              <option key={b} value={b}>
+                {b}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* 🔹 EMPTY STATE */}
+        {!brand && (
+          <div
+            style={{
+              marginTop: "35px",
+              padding: "30px",
+              borderRadius: "14px",
+              border: "1px dashed #334155",
+              textAlign: "center",
+              color: "#94a3b8",
+            }}
+          >
+            <h3 style={{ color: "#c7d2fe" }}>
+              Brand Insights Preview
+            </h3>
+            <p style={{ marginTop: "12px" }}>
+              Select a brand to see:
+            </p>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                marginTop: "15px",
+                lineHeight: "1.9",
+              }}
+            >
+              <li>✔ Trust & reliability score</li>
+              <li>✔ Best & worst use cases</li>
+              <li>✔ Ideal price range</li>
+              <li>✔ Buyer suitability</li>
+              <li>✔ Common complaints</li>
+              <li>✔ Official & service links</li>
+            </ul>
+            <p style={{ marginTop: "18px", fontStyle: "italic" }}>
+              Designed to reduce buyer confusion and regret.
+            </p>
+          </div>
+        )}
+
+        {/* 🔹 BRAND DETAILS */}
+        {brand && (
+          <div
+            style={{
+              marginTop: "35px",
+              padding: "30px",
+              borderRadius: "16px",
+              border: "1px solid #1e293b",
+              background: "#020617",
+            }}
+          >
+            <h2
+              style={{
+                color: "#e0e7ff",
+                marginBottom: "22px",
+                borderBottom: "1px solid #1e293b",
+                paddingBottom: "10px",
+              }}
+            >
+              {selectedBrand} — Trust Snapshot
+            </h2>
+
+            {/* 🔹 METRICS GRID */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "18px",
+                marginBottom: "26px",
+              }}
+            >
+              <div>⭐ <strong>Trust Score</strong><br />{brand.trustScore}/100</div>
+              <div>🛠 <strong>Service Coverage</strong><br />{brand.serviceCoverage}</div>
+              <div>🔁 <strong>Resale Value</strong><br />{brand.resaleValue}</div>
+              <div>⏳ <strong>Lifespan</strong><br />{brand.lifespan}</div>
+            </div>
+
+            {/* 🔹 TAG SECTIONS */}
+            <h4>✅ Best For</h4>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              {brand.bestFor.map((item) => (
+                <span
+                  key={item}
+                  style={{
+                    background: "#1e40af",
+                    padding: "6px 14px",
+                    borderRadius: "999px",
+                    fontSize: "14px",
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <h4 style={{ marginTop: "20px" }}>⚠ Not Ideal For</h4>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              {brand.worstFor.map((item) => (
+                <span
+                  key={item}
+                  style={{
+                    background: "#7f1d1d",
+                    padding: "6px 14px",
+                    borderRadius: "999px",
+                    fontSize: "14px",
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <h4 style={{ marginTop: "22px" }}>💰 Ideal Price Range</h4>
+            <p style={{ fontSize: "18px", color: "#c7d2fe" }}>
+              {brand.priceRange}
+            </p>
+
+            <h4>👥 Who Should Buy</h4>
+            <p style={{ color: "#94a3b8" }}>{brand.whoShouldBuy}</p>
+
+            <h4>❌ Common Complaints</h4>
+            <ul style={{ color: "#fca5a5" }}>
+              {brand.complaints.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+
+            {/* 🔹 ACTION BUTTONS */}
+            <div
+              style={{
+                marginTop: "28px",
+                display: "flex",
+                gap: "14px",
+              }}
+            >
+              <button
+                onClick={() => window.open(brand.officialSite, "_blank")}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  background: "#2563eb",
+                  color: "#fff",
+                  borderRadius: "10px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Official Website 🌐
+              </button>
+
+              <button
+                onClick={() => window.open(brand.servicePage, "_blank")}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  background: "transparent",
+                  color: "#2563eb",
+                  border: "1px solid #2563eb",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                }}
+              >
+                Service & Support 🛠
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 🔹 LOGOUT */}
+        <div style={{ marginTop: "45px", textAlign: "right" }}>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/signup");
+            }}
+            style={{
+              background: "#dc2626",
+              color: "#fff",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Logout
           </button>
         </div>
       </div>

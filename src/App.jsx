@@ -32,7 +32,7 @@ const App = () => {
             textShadow: '0 0 10px rgba(255,255,255,0.3)',
           }}
         >
-          Laptop-buy-guide
+          LapWise
         </div>
 
         {/* Navigation Links */}

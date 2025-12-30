@@ -9,22 +9,25 @@ function Signin() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:3000/login", {
-        username,
-        password,
-      });
-      setMessage(res.data.message);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-      if (res.data.message === "Login successful!") {
-        navigate("/dashboard", { state: { username } });
-      }
-    } catch (err) {
-      setMessage("Server error");
-    }
-  };
+  try {
+    const res = await axios.post("http://localhost:3000/login", {
+      username,
+      password,
+    });
+
+    // ✅ Store JWT instead of relying on message
+    localStorage.setItem("token", res.data.token);
+
+    // ✅ Navigate after token is stored
+    navigate("/dashboard");
+
+  } catch (err) {
+    setMessage("Invalid username or password");
+  }
+};
 
   const handleCreateAccount = () => {
     navigate("/createacc");

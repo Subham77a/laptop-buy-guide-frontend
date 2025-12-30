@@ -1,0 +1,112 @@
+.home {
+  background: #020617;
+  color: #e5e7eb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #020617, #0f172a);
+}
+
+.hero h1 {
+  font-size: 3rem;
+}
+
+.hero p {
+  max-width: 900px;
+  margin: 1.5rem auto;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+
+.hero button,
+.cta button {
+  padding: 1rem 3rem;
+  background: #2563eb;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* GUIDE SECTIONS */
+.guide {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  padding: 5rem 8%;
+}
+
+.guide.reverse {
+  flex-direction: row-reverse;
+}
+
+.guide-text {
+  flex: 1;
+}
+
+.guide-text h2 {
+  font-size: 2.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+.guide-text ul {
+  list-style: none;
+  padding: 0;
+}
+
+.guide-text li {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+/* IMAGE */
+.guide-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.guide-image img {
+  max-width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 6rem 2rem;
+}
+
+.cta p {
+  max-width: 700px;
+  margin: 1rem auto;
+  color: #9ca3af;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid #1e293b;
+  color: #64748b;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .guide,
+  .guide.reverse {
+    flex-direction: column;
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = "http://localhost:3000/addDetail";
 
@@ -10,7 +11,9 @@ function Createacc() {
     password: "",
   });
 
+   const navigate = useNavigate(); 
   const [message, setMessage] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -18,6 +21,7 @@ function Createacc() {
       [e.target.name]: e.target.value,
     });
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,19 +35,21 @@ function Createacc() {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        setMessage("Registration successful! ✅");
-        console.log("Success:", result);
+        setMessage("Registration successful! Redirecting... ");
+
+        setTimeout(() => {
+          navigate("/signup");
+        }, 2000);
+
       } else {
-        const errorData = await response.json();
-        setMessage(
-          `Registration failed: ${errorData.message || "Server error"}. ❌`
-        );
+        setMessage("Registration failed ");
       }
     } catch (error) {
-      setMessage(`Network error: ${error.message}. ⚠️`);
+      setMessage(`Network error: ${error.message}`);
     }
   };
+
+
 
   // 🎨 Styles (matching Signin)
   const containerStyle = {
