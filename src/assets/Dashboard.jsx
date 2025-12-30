@@ -18,7 +18,7 @@ const Dashboard = () => {
     }
 
     axios
-      .get("http://localhost:3000/api/auth/validate-token", {
+      .get("https://lapwise-backend.onrender.com/api/auth/validate-token", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -82,7 +82,7 @@ const Dashboard = () => {
               navigate("/signup");
               return;
             }
-            window.location.href = `http://localhost:8501/?token=${token}`;
+            window.location.href = `https://lapwise.onrender.com/?token=${token}`;
           }}
           style={{
             background: "linear-gradient(135deg, #2563eb, #1d4ed8)",

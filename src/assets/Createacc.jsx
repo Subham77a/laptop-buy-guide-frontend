@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL = "http://localhost:3000/addDetail";
+const BACKEND_URL = "https://lapwise-backend.onrender.com/addDetail";
 
 function Createacc() {
   const [formData, setFormData] = useState({
