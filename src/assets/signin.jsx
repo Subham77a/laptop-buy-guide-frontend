@@ -22,7 +22,7 @@ const handleSubmit = async (e) => {
     localStorage.setItem("token", res.data.token);
 
     // ✅ Navigate after token is stored
-    navigate("/dashboard");
+    navigate("/Dashboard");
 
   } catch (err) {
     setMessage("Invalid username or password");
@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
 };
 
   const handleCreateAccount = () => {
-    navigate("/createacc");
+    navigate("/Createacc");
   };
 
   // --- Inline Styles ---
